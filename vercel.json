@@ -5,5 +5,5 @@
       "dest": "/api/"
     }
   ],
-  "regions": ["dub1", "lhr1"]
+  "regions": ["dub1"]
 }
