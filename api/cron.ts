@@ -52,5 +52,4 @@ export default Queue<string>(
           if (bulk.batches.length > 0)
               return bulk.execute().then(() => console.log(`${downloadUrl} -> ${tag}`))
       }
-  }
-);
+  });

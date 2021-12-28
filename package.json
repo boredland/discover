@@ -24,7 +24,7 @@
     "@types/tar": "6.1.1",
     "@types/tar-stream": "2.2.2",
     "@typescript-eslint/eslint-plugin": "5.8.0",
-    "@typescript-eslint/parser": "5.8.0",
+    "@typescript-eslint/parser": "5.8.1",
     "concurrently": "6.5.1",
     "eslint": "8.5.0",
     "eslint-config-prettier": "8.3.0",

@@ -1,5 +1,4 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { createTrue } from "typescript";
 import { getDBUrl, RepoConfig } from "../lib/config";
 import cron from "./cron";
 
