@@ -15,7 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return cron.enqueueMany(urls.map(url => ({ payload: url, options: {
             override: true,
             repeat: {
-                every: '30m'
+                every: '10m'
             }
         } })));
     });
