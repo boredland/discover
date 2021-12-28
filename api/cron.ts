@@ -1,7 +1,8 @@
 import { Queue } from "quirrel/vercel";
-import { desc } from "../lib/collections";
+import { desc, file } from "../lib/collections";
 import { scrape } from "../lib/scrape";
 import https from "node:https";
+import logger from "../lib/logger";
 
 const getTag = async (url: string) => {
   return new Promise<string>(function (resolve) {
@@ -17,13 +18,16 @@ const getTag = async (url: string) => {
 export default Queue<string>(
   "api/cron", // 👈 the route that it's reachable on
   async (downloadUrl) => {
+      logger.info(`processing ${downloadUrl}`);
       const descCollection = await desc();
+      const fileCollection = await file();
       const tag = await getTag(downloadUrl);
       const repoMeta = { url: downloadUrl, tag }
 
       // check if we already inserted this file
-      const oneDesc = await descCollection.findOne({ repoMeta });
-      if (!oneDesc) {
+      const oneFile = await fileCollection.findOne({ url: downloadUrl, tag });
+
+      if (!oneFile) {
           const bulk = descCollection.initializeUnorderedBulkOp()
 
           const descs = await scrape(downloadUrl);
@@ -50,6 +54,9 @@ export default Queue<string>(
           }).delete();
 
           if (bulk.batches.length > 0)
-              return bulk.execute().then(() => console.log(`${downloadUrl} -> ${tag}`))
+            await bulk.execute()
       }
+
+      await fileCollection.insertOne({ url: downloadUrl, createdAt: new Date() });
+      logger.info(`${downloadUrl} -> ${tag} written`)
   });

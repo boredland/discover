@@ -5,3 +5,10 @@ import { connect } from "./db";
 type Collection<T> = { repoMeta: RepoConfig & { tag: string } } & T
 
 export const desc = async () => (await connect()).db().collection<Collection<Desc>>('desc');
+
+type DBFile = {
+    url: string;
+    createdAt: Date;
+}
+
+export const file = async () => (await connect()).db().collection<DBFile>('file');
