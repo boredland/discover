@@ -57,6 +57,6 @@ export default Queue<string>(
             await bulk.execute()
       }
 
-      await fileCollection.insertOne({ url: downloadUrl, createdAt: new Date() });
+      await fileCollection.insertOne({ url: downloadUrl, tag, createdAt: new Date() });
       logger.info(`${downloadUrl} -> ${tag} written`)
   });

@@ -9,6 +9,7 @@ export const desc = async () => (await connect()).db().collection<Collection<Des
 type DBFile = {
     url: string;
     createdAt: Date;
+    tag: string;
 }
 
 export const file = async () => (await connect()).db().collection<DBFile>('file');
