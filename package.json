@@ -1,5 +1,5 @@
 {
-  "name": "package-search",
+  "name": "discover",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -29,7 +29,8 @@
     "eslint-config-prettier": "8.3.0",
     "jest": "27.4.5",
     "prettier": "2.5.1",
-    "regenerator-runtime": "0.13.9"
+    "regenerator-runtime": "0.13.9",
+    "vercel": "23.1.2"
   },
   "engines": {
     "node": "^14"

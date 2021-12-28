@@ -24,16 +24,14 @@ const getTag = async (url: string) => {
 export default async function handler(req: VercelRequest, res: VercelResponse) {
     const descCollection = await desc();
 
-    await Promise.all(configs.map(config => {
+    const todo = configs.map(config => {
         const urls = getDBUrl(config);
-        return urls.map(async downloadUrl => {
+        return Promise.all(urls.map(async downloadUrl => {
             const tag = await getTag(downloadUrl);
             const repoMeta = { url: downloadUrl, tag }
 
             // check if we already inserted this file
             const oneDesc = await descCollection.findOne({ repoMeta });
-
-
             if (!oneDesc) {
                 const bulk = descCollection.initializeUnorderedBulkOp()
 
@@ -63,8 +61,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 if (bulk.batches.length > 0)
                     return bulk.execute().then(() => console.log(`${downloadUrl} -> ${tag}`))
             }
-        });
-    })).then(() => console.log("all done"));
+        }));
+    });
 
-    res.status(200).json({ laal: "la"});
+    await Promise.all(todo);
+    res.status(200).json({ queued: "ok"});
 }
