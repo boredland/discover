@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 import { config as Dotenv } from "dotenv-flow";
 
-Dotenv();
+Dotenv({ silent: true });
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
