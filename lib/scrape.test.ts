@@ -1,26 +1,21 @@
-import { RepoConfig } from "./config";
+import { getDBUrl, RepoConfig } from "./config";
 import { parseDesc, scrape } from "./scrape";
 import fsPromises from 'node:fs/promises'
 
-test("manjaro sway aarch64", async () => {
-    const config: RepoConfig = { url: "https://packages.manjaro-sway.download/", name: "manjaro-sway", architecture: 'aarch64' }
-    const result = await scrape(config);
-    expect(result).not.toBeUndefined();
-    expect(result?.length).toBeGreaterThan(10);
-})
-
-test("manjaro sway x86", async () => {
-    const config: RepoConfig = { url: "https://packages.manjaro-sway.download/", name: "manjaro-sway", architecture: 'x86_64' }
-    const result = await scrape(config);
+test("manjaro sway", async () => {
+    const config: RepoConfig = { url: "https://packages.manjaro-sway.download/$arch/$name.db.tar.gz", name: "manjaro-sway", arch: ['x86_64','aarch64'] }
+    const url = getDBUrl(config)[0]
+    const result = await scrape(url);
     expect(result).not.toBeUndefined();
     expect(result?.length).toBeGreaterThan(10);
 })
 
 test("manjaro community x86", async () => {
-    const config: RepoConfig = { url: "https://ftp.gwdg.de/pub/linux/manjaro/", name: "manjaro", architecture: 'x86_64', branch: "stable", repo: "community" }
-    const result = await scrape(config);
+    const config: RepoConfig =  { url: "https://ftp.gwdg.de/pub/linux/manjaro/$branch/$repo/$arch/$repo.db.tar.gz", branch: ["stable"], name: "manjaro", arch: ['x86_64'], repo: ["core"] }
+    const url = getDBUrl(config)[0]
+    const result = await scrape(url);
     expect(result).not.toBeUndefined();
-    expect(result?.length).toBeGreaterThan(8000);
+    expect(result?.length).toBeGreaterThan(250);
 })
 
 test("parse desc", async () => {

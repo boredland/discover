@@ -1,10 +1,10 @@
 {
   "name": "package-search",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev src/index.ts",
+    "test": "jest"
   },
   "dependencies": {
     "@vercel/node": "1.12.1",

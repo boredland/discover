@@ -6,7 +6,7 @@ import https from "node:https";
 
 const configs: RepoConfig[] = [
     { url: "https://packages.manjaro-sway.download/$arch/$name.db.tar.gz", name: "manjaro-sway", arch: ['x86_64','aarch64'] },
-    { url: "https://ftp.gwdg.de/pub/linux/manjaro/$branch/$repo/$arch/$repo.db.tar.gz", branch: ["stable", "testing", "unstable"], name: "manjaro-sway", arch: ['x86_64'], repo: ["core", "community", "extra", "multilib"] },
+    { url: "https://ftp.gwdg.de/pub/linux/manjaro/$branch/$repo/$arch/$repo.db.tar.gz", branch: ["stable", "testing", "unstable"], name: "manjaro", arch: ['x86_64'], repo: ["core", "community", "extra", "multilib"] },
     { url: "https://ftp.gwdg.de/pub/linux/archlinux/$repo/os/$arch/$repo.db.tar.gz", name: "archlinux", arch: ['x86_64'], repo: ["core", "community", "extra", "multilib"] },
 ]
 
