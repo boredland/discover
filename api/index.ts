@@ -9,6 +9,12 @@ const configs: RepoConfig[] = [
     { url: "https://ftp.gwdg.de/pub/linux/archlinux/$repo/os/$arch/$repo.db.tar.gz", name: "archlinux", arch: ['x86_64'], repo: ["core", "community", "extra", "multilib"] },
 ]
 
+const between = (min: number, max: number)  => {  
+    return Math.floor(
+        Math.random() * (max - min + 1) + min
+    )
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const todo = configs.map(config => {
@@ -16,6 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return cron.enqueueMany(urls.map(url => ({ payload: url, options: {
             override: false,
             id: url,
+            delay: `${between(0, 5)}m`,
             repeat: {
                 every: '10m'
             }
