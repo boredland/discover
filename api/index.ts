@@ -1,4 +1,5 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { createTrue } from "typescript";
 import { getDBUrl, RepoConfig } from "../lib/config";
 import cron from "./cron";
 
@@ -14,6 +15,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const urls = getDBUrl(config);
         return cron.enqueueMany(urls.map(url => ({ payload: url, options: {
             override: false,
+            id: url,
             repeat: {
                 every: '10m'
             }
