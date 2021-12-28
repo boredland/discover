@@ -19,27 +19,37 @@ export default Queue<string>(
   "cron", // 👈 the route that it's reachable on
   async (downloadUrl) => {
       logger.info(`processing ${downloadUrl}`);
+      const hrStart = process.hrtime();
       const descCollection = await desc();
       const fileCollection = await file();
       const tag = await getTag(downloadUrl);
       const repoMeta = { url: downloadUrl, tag }
 
       // check if we already inserted this file
-      const oneFile = await fileCollection.findOne({ url: downloadUrl, tag });
+      const oneFile = await fileCollection.findOne({ url: { $eq: downloadUrl }, tag: { $eq: tag} });
 
       if (!oneFile) {
-          const bulk = descCollection.initializeUnorderedBulkOp()
+          const bulk = descCollection.initializeUnorderedBulkOp();
+          const alreadyInsertedDescs = (await descCollection
+              .find({ url: { $eq: downloadUrl }, tag: { $eq: tag } })
+              .toArray());
+
 
           const descs = await scrape(downloadUrl);
-          descs?.map(desc => {
+          descs?.filter(desc => {
+                return !alreadyInsertedDescs.find(aDesc => (aDesc.NAME === desc.NAME) && (aDesc.repoMeta.tag === tag));
+          }).map(desc => {
               bulk.find({
                   NAME: desc.NAME,
-                  "repoMeta.url": {
-                      $eq: downloadUrl,
+                  repoMeta: {
+                      tag: { $eq: tag },
+                      url: { $eq: downloadUrl }
                   }
-              }).upsert().replaceOne({
-                  ...desc,
-                  repoMeta,
+              }).upsert().updateOne({
+                  $set: {
+                    ...desc,
+                    repoMeta,
+                  }
               })
           });
           bulk.find({
@@ -54,9 +64,12 @@ export default Queue<string>(
           }).delete();
 
           if (bulk.batches.length > 0)
-            await bulk.execute()
-      }
 
-      await fileCollection.insertOne({ url: downloadUrl, tag, createdAt: new Date() });
-      logger.info(`${downloadUrl} -> ${tag} written`)
+            await bulk.execute()
+          await fileCollection.insertOne({ url: downloadUrl, tag, createdAt: new Date() });
+
+        logger.info(`${downloadUrl} -> ${tag} written`);
+      }
+      const hrEnd = process.hrtime(hrStart);
+      logger.info(`operation took ${hrEnd[0]}s and ${hrEnd[1] / 1000000}ms`);
   });

@@ -21,8 +21,8 @@ const client = new MongoClient(url);
 
 
 export const connect = async () => {
-    if (!global.__MONGO__) {
-        global.__MONGO__ = await client.connect();
-    }
-    return global.__MONGO__
+  if (!global.__MONGO__) {
+      global.__MONGO__ = await client.connect();
+  }
+  return global.__MONGO__
 }
