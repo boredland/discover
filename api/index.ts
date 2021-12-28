@@ -16,7 +16,7 @@ const getTag = async (url: string) => {
         const tag = response.headers["etag"] ?? response.headers["last-modified"];
         if (!tag)
           throw new Error("url neither provides etag, nor last-modified headers");
-          resolve(tag.replaceAll('"', "").trim());
+          resolve(tag.replace(/"/g, "").trim());
         });
     });
 };

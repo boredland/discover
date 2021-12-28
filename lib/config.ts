@@ -38,16 +38,16 @@ export const getDBUrl = (repoConfig: RepoConfig) => {
     for (const config of configs) {
         let url = config.url;
 
-        url = url.replaceAll('$name', config.name)
+        url = url.replace(/\$name/g, config.name)
 
         if (config.repo && config.repo[0])
-            url = url.replaceAll('$repo', config.repo[0])
+            url = url.replace(/\$repo/g, config.repo[0])
 
         if (config.branch && config.branch[0])
-            url = url.replaceAll('$branch', config.branch[0])
+            url = url.replace(/\$branch/g, config.branch[0])
 
         if (config.arch && config.arch[0]) {
-            url = url.replaceAll('$arch', config.arch[0])
+            url = url.replace(/\$arch/g, config.arch[0])
         }
 
         urls.push(url)
