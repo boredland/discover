@@ -4,5 +4,6 @@
       "src": "/(.*)",
       "dest": "/api/"
     }
-  ]
+  ],
+  "regions": ["dub1", "lhr1"]
 }
