@@ -1,6 +1,7 @@
-import { desc } from "./lib/collections";
-import { getDBUrl, RepoConfig } from "./lib/config";
-import { scrape } from "./lib/scrape";
+import { VercelRequest, VercelResponse } from "@vercel/node";
+import { desc } from "../lib/collections";
+import { getDBUrl, RepoConfig } from "../lib/config";
+import { scrape } from "../lib/scrape";
 import https from "node:https";
 
 const configs: RepoConfig[] = [
@@ -20,7 +21,7 @@ const getTag = async (url: string) => {
     });
 };
 
-async function main() {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
     const descCollection = await desc();
 
     await Promise.all(configs.map(config => {
@@ -65,6 +66,3 @@ async function main() {
         });
     })).then(() => console.log("all done"));
 }
-
-main()
-  .catch(console.error);
