@@ -65,4 +65,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             }
         });
     })).then(() => console.log("all done"));
+
+    res.status(200).json({ laal: "la"});
 }
