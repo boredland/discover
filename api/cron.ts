@@ -30,15 +30,9 @@ export default Queue<string>(
 
       if (!oneFile) {
           const bulk = descCollection.initializeUnorderedBulkOp();
-          const alreadyInsertedDescs = (await descCollection
-              .find({ url: { $eq: downloadUrl }, tag: { $eq: tag } })
-              .toArray());
-
-
           const descs = await scrape(downloadUrl);
-          descs?.filter(desc => {
-                return !alreadyInsertedDescs.find(aDesc => (aDesc.NAME === desc.NAME) && (aDesc.repoMeta.tag === tag));
-          }).map(desc => {
+          
+          descs?.map(desc => {
               bulk.find({
                   NAME: desc.NAME,
                   repoMeta: {
@@ -49,7 +43,7 @@ export default Queue<string>(
                   $set: {
                     ...desc,
                     repoMeta,
-                  }
+                  },
               })
           });
           bulk.find({

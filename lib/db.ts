@@ -1,5 +1,7 @@
-import { MongoClient } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import { config as Dotenv } from "dotenv-flow";
+import { Desc } from './scrape';
+import { ensureIndexes } from './collections';
 
 Dotenv({ silent: true });
 
@@ -23,6 +25,7 @@ const client = new MongoClient(url);
 export const connect = async () => {
   if (!global.__MONGO__) {
       global.__MONGO__ = await client.connect();
+      await ensureIndexes();
   }
   return global.__MONGO__
 }

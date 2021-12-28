@@ -21,9 +21,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return cron.enqueueMany(urls.map(url => ({ payload: url, options: {
             override: false,
             id: url,
-            delay: `${between(0, 5)}m`,
+            delay: `${between(0, 25)}m`,
             repeat: {
-                every: '10m'
+                every: '30m'
             }
         } })));
     });
