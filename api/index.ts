@@ -13,7 +13,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const todo = configs.map(config => {
         const urls = getDBUrl(config);
         return cron.enqueueMany(urls.map(url => ({ payload: url, options: {
-            override: true,
+            override: false,
             repeat: {
                 every: '10m'
             }
