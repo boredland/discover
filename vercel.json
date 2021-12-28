@@ -1,3 +1,13 @@
 {
+  "rewrites": [
+    {
+      "source": "/:path",
+      "destination": "/api/:path"
+    },
+    {
+      "source": "/",
+      "destination": "/api/"
+    }
+  ],
   "regions": ["dub1"]
 }

@@ -16,7 +16,7 @@ const getTag = async (url: string) => {
 };
 
 export default Queue<string>(
-  "api/cron", // 👈 the route that it's reachable on
+  "cron", // 👈 the route that it's reachable on
   async (downloadUrl) => {
       logger.info(`processing ${downloadUrl}`);
       const descCollection = await desc();
